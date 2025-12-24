@@ -51,6 +51,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish Artifacts ADO - Bicep
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/infra/webapp.bicep'
+    # Zid esm el dossier qbal infra
+        targetPath: '$(Build.SourcesDirectory)/eShopOnWeb-main/infra/webapp.bicep' 
         artifact: 'Bicep'
         publishLocation: 'pipeline'
