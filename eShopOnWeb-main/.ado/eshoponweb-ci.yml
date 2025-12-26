@@ -1,7 +1,3 @@
-#NAME THE PIPELINE SAME AS FILE (WITHOUT ".yml")
-# trigger:
-# - main
-
 resources:
   repositories:
     - repository: self
@@ -16,22 +12,24 @@ stages:
       name: 'Default'
     steps:
     - checkout: self
+
+    # Task mta' el Replace Tokens (Hédhi dima khalliha khaterha salla7t el secret)
     - task: qetza.replacetokens.replacetokens-task.replacetokens@5
       displayName: 'Replace Tokens in Constants.cs'
       inputs:
-        targetFiles: '**/*.cs'
+        targetFiles: '**/Constants.cs'
         encoding: 'auto'
         tokenPattern: 'custom'
         tokenPrefix: '#{' 
         tokenSuffix: '}#' 
         verbosity: 'detailed' 
         keepToken: false
+
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
         command: 'restore'
         projects: '**/*.sln'
-        feedsToUse: 'select'
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -52,6 +50,7 @@ stages:
         publishWebProjects: true
         arguments: '-o $(Build.ArtifactStagingDirectory)'
     
+    # --- Artifacts: Hna l'fayda mta' el Lab ---
     - task: PublishPipelineArtifact@1
       displayName: Publish Artifacts ADO - Website
       inputs:
@@ -62,7 +61,6 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish Artifacts ADO - Bicep
       inputs:
-    # Zid esm el dossier qbal infra
         targetPath: '$(Build.SourcesDirectory)/eShopOnWeb-main/infra/webapp.bicep' 
         artifact: 'Bicep'
         publishLocation: 'pipeline'
