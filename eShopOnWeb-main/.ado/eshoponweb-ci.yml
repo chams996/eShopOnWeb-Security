@@ -15,6 +15,17 @@ stages:
     pool:
       name: 'Default'
     steps:
+    - checkout: self
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@5
+      displayName: 'Replace Tokens in Constants.cs'
+      inputs:
+        targetFiles: '**/*.cs'
+        encoding: 'auto'
+        tokenPattern: 'custom'
+        tokenPrefix: '#{' 
+        tokenSuffix: '}#' 
+        verbosity: 'detailed' 
+        keepToken: false
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
